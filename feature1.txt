@@ -1,2 +1,1 @@
-feature 1 of featureBranch
-line 2 of feature1
+feature 1 of branch
