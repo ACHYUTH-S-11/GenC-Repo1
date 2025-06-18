@@ -1,33 +1,46 @@
-Overview
-The Shopping Cart Module is a vital part of the E-Commerce application. It empowers users to manage their potential purchases by:
+# Overview
+The Shopping Cart Module is a core component of the E-Commerce application, enabling users to manage their potential purchases.
 
-Adding products to their cart.
-Viewing the items currently in their cart.
-Removing items from their cart.
-Calculating the total price of all items in their cart.
-This module seamlessly integrates with the Product and User modules to retrieve product specifics and link cart items to individual users.
+The Shopping Cart Module facilitates the following key functionalities:
 
-Architecture
-The Shopping Cart Module adheres to a layered architecture, promoting separation of concerns and maintainability:
+* **Adding products:** Users can add desired products to their cart.
+* **Viewing items:** Users can see the products currently in their cart.
+* **Removing items:** Users can remove products they no longer wish to purchase.
+* **Calculating total price:** The module calculates the cumulative price of all items in the cart.
 
-Controller Layer: This layer is the entry point for all HTTP requests, handling incoming requests and crafting appropriate HTTP responses.
-Service Layer: This is where the core business logic for all cart operations resides. It orchestrates interactions between the repository and other services.
-Repository Layer: Responsible for direct interactions with the database using JPA (Java Persistence API), abstracting data access details.
-Model Layer: Defines the data structures and relationships for the application's entities, such as CartItem, Product, and User.
+This module integrates with the **Product** and **User** modules to retrieve product details and associate cart items with specific users.
 
-+---------------------+    HTTP Request    +-------------------+    Service Call    +-----------------+    Repository Call    +---------------------+    JPA Mapping    +------------+
-| Client (Browser/App)|------------------->| CartController    |------------------->| CartService     |---------------------->| CartItemRepository  |----------------->| Database   |
-+---------------------+                    +-------------------+                    +-----------------+                      +---------------------+                  | (product,  |
-          ^                                        |                                        |                                          |                        SQL Queries   |  user,     |
-          |                                        | Delegates Request                      | Business Logic                           | Data Access Logic      <------------->|  cart_item)|
-          |                                        |                                        | Orchestrates Services                    | ORM (JPA)              Object Mapping |            |
-          | HTTP Response                          |                                        |                                          |                        <------------- |            |
-          +----------------------------------------+----------------------------------------+------------------------------------------+------------------------------------------+
-                                                   |                                        |                                          |
-                                                   V                                        V                                          V
-                                          Processes Request                       Retrieves/Manages Data                    Performs CRUD Operations
-                                          Prepares Response                       Interacts with Repositories               Translates Objects to SQL
-                                                                                  Transforms Data                           Interacts with Database Driver
+---
+
+# Architecture
+The Shopping Cart Module employs a layered architecture, ensuring separation of concerns and maintainability:
+
+* **Controller Layer:** Handles incoming HTTP requests and generates appropriate responses.
+* **Service Layer:** Contains the core business logic for all cart operations, coordinating interactions between the repository and other services.
+* **Repository Layer:** Manages direct database interactions using JPA (Java Persistence API), abstracting data access details.
+* **Model Layer:** Defines the data structures and relationships for application entities such as `CartItem`, `Product`, and `User`.
+
+```mermaid
+graph TD
+    A[Client (Browser/App)] -->|HTTP Request| B(CartController)
+    B -->|Delegates Request| C(CartService)
+    C -->|Business Logic Orchestrates Services| D(CartItemRepository)
+    D -->|Data Access Logic ORM (JPA) Object Mapping| E(Database)
+
+    subgraph Layers
+        B --- F[Processes Request Prepares Response]
+        C --- G[Retrieves/Manages Data Interacts with Repositories]
+        D --- H[Performs CRUD Operations Translates Objects to SQL]
+        E --- I[Transforms Data Interacts with Database Driver]
+    end
+
+    E -- SQL Queries --> E(Database)
+    E -- JPA Mapping --> D
+    D -- Repository Call --> C
+    C -- Service Call --> B
+    B -- HTTP Response --> A
+
+    note right of E: (product, user, cart_item)
 
 Endpoints
 Base URL: http://<host>:<port>/api/cart
