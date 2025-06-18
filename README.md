@@ -86,3 +86,32 @@ The Shopping Cart Module follows a **layered architecture** to ensure separation
 | `user_id`        | BIGINT    | Foreign key referencing `app_user` |
 | `quantity`       | INT       | Quantity of the product in cart |
 | `total_price`    | DOUBLE    | Total price for the cart item   |
+
+
+## Module Structure
+E_Commerce/                   # E-Commerce Spring Boot application
+├── src/
+│   ├── main/
+│   │   ├── java/com/platform/ecommerce/
+│   │   │   ├── EcommerceApplication.java  # Main application class
+│   │   │   ├── config/                    # Configuration classes
+│   │   │   │   └── DataSeeder.java        # Seeds initial data
+│   │   │   ├── controller/               # API endpoints
+│   │   │   │   └── CartController.java    # Handles cart-related endpoints
+│   │   │   ├── model/                    # JPA entities
+│   │   │   │   ├── CartItem.java         # Cart item entity
+│   │   │   │   ├── Product.java          # Product entity
+│   │   │   │   └── User.java             # User entity
+│   │   │   ├── repository/               # Data access layer
+│   │   │   │   ├── CartItemRepository.java # Cart item repository
+│   │   │   │   ├── ProductRepository.java  # Product repository
+│   │   │   │   └── UserRepository.java     # User repository
+│   │   │   ├── service/                  # Business logic
+│   │   │   │   └── CartService.java      # Handles cart operations
+│   │   └── resources/
+│   │       ├── application.properties    # Application configuration
+│   │       └── static/                   # Static resources (if any)
+├── test/                                 # Unit tests
+│   ├── java/com/platform/ecommerce/
+│   │   └── EcommerceApplicationTests.java # Unit tests for the application
+├── pom.xml                               # Maven configuration file
