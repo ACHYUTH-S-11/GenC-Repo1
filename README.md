@@ -89,6 +89,7 @@ The Shopping Cart Module follows a **layered architecture** to ensure separation
 
 
 ## Module Structure
+'''
 E_Commerce/                   # E-Commerce Spring Boot application
 ├── src/
 │   ├── main/
@@ -115,3 +116,4 @@ E_Commerce/                   # E-Commerce Spring Boot application
 │   ├── java/com/platform/ecommerce/
 │   │   └── EcommerceApplicationTests.java # Unit tests for the application
 ├── pom.xml                               # Maven configuration file
+'''
