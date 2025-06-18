@@ -59,3 +59,30 @@ The Shopping Cart Module follows a **layered architecture** to ensure separation
 - **Endpoint**: `/api/cart/products`
 - **Method**: `GET`
 - **Function**: Retrieves a list of all available products in the system.
+
+
+## Tables
+### Product Table
+
+| Column Name   | Data Type | Description           |
+|---------------|-----------|-----------------------|
+| `product_id`  | BIGINT    | Primary key           |
+| `name`        | VARCHAR   | Name of the product   |
+| `price`       | DOUBLE    | Price of the product  |
+
+### App_User Table
+
+| Column Name   | Data Type | Description       |
+|---------------|-----------|-------------------|
+| `user_id`     | BIGINT    | Primary key       |
+| `name`        | VARCHAR   | Name of the user  |
+
+### Cart_Item Table
+
+| Column Name     | Data Type | Description                     |
+|------------------|-----------|---------------------------------|
+| `cart_item_id`   | BIGINT    | Primary key                     |
+| `product_id`     | BIGINT    | Foreign key referencing `product` |
+| `user_id`        | BIGINT    | Foreign key referencing `app_user` |
+| `quantity`       | INT       | Quantity of the product in cart |
+| `total_price`    | DOUBLE    | Total price for the cart item   |
