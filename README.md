@@ -88,7 +88,7 @@ The Shopping Cart Module follows a **layered architecture** to ensure separation
 | `total_price`    | DOUBLE    | Total price for the cart item   |
 
 
-## Module Structure
+## File Structure
 ```
 E_Commerce/                   # E-Commerce Spring Boot application
 ├── src/
