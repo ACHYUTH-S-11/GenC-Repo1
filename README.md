@@ -11,6 +11,99 @@ This module interacts with the `Product` and `User` modules to fetch product det
 
 ## Architecture
 
+graph TD
+    subgraph "Component Diagram"
+        subgraph "Presentation Layer"
+            CartController[CartController]
+        end
+
+        subgraph "Business Logic Layer"
+            CartService[CartService]
+        end
+
+        subgraph "Data Access Layer"
+            CartItemRepository[CartItemRepository]
+            ProductRepository[ProductRepository]
+            UserRepository[UserRepository]
+        end
+
+        subgraph "External Systems"
+            MySQL[(MySQL Database)]
+            Eureka[(Eureka Discovery Service)]
+        end
+
+        CartController --> CartService
+        CartService --> CartItemRepository
+        CartService --> ProductRepository
+        CartService --> UserRepository
+        CartItemRepository --> MySQL
+        ProductRepository --> MySQL
+        UserRepository --> MySQL
+
+        CartController -- Registers/Discovers --> Eureka
+        CartService -- Discovers --> Eureka
+
+        style CartController fill:#bbf,stroke:#333,stroke-width:2px
+        style CartService fill:#bbf,stroke:#333,stroke-width:2px
+        style CartItemRepository fill:#bbf,stroke:#333,stroke-width:2px
+        style ProductRepository fill:#bbf,stroke:#333,stroke-width:2px
+        style UserRepository fill:#bbf,stroke:#333,stroke-width:2px
+        style MySQL fill:#f9f,stroke:#333,stroke-width:2px
+        style Eureka fill:#f9f,stroke:#333,stroke-width:2px
+    end
+
+    ---
+
+    classDiagram
+        User "1" --o "0..*" CartItem : has
+        CartItem "0..*" -- "1" Product : contains
+
+        class User {
+            +Long id
+            +String username
+            +String email
+        }
+
+        class Product {
+            +Long id
+            +String name
+            +double price
+            +int stock
+        }
+
+        class CartItem {
+            +Long id
+            +int quantity
+            +double subtotal
+        }
+
+    ---
+
+    sequenceDiagram
+        actor User
+        User->>CartController: POST /api/cart/add {productId, quantity}
+        CartController->>CartService: addItemToCart(userId, productId, quantity)
+        CartService->>UserRepository: findById(userId)
+        UserRepository-->>CartService: User object
+        CartService->>ProductRepository: findById(productId)
+        ProductRepository-->>CartService: Product object
+        alt Product not found or out of stock
+            CartService-->>CartController: Throws Exception (e.g., ProductNotFoundException)
+            CartController-->>User: HTTP 404/400 Error
+        else Product found and in stock
+            CartService->>CartItemRepository: findByUserIdAndProductId(userId, productId)
+            CartItemRepository-->>CartService: Existing CartItem (optional)
+            alt Existing CartItem
+                CartService->>CartItem: update quantity and subtotal
+            else New CartItem
+                CartService->>CartItem: create new CartItem
+            end
+            CartService->>CartItemRepository: save(CartItem)
+            CartItemRepository-->>CartService: Saved CartItem
+            CartService-->>CartController: CartItem object
+            CartController-->>User: HTTP 200 OK (CartItem details)
+        end
+
 The Shopping Cart Module follows a **layered architecture** to ensure separation of concerns and maintainability:
 
 1. **Controller Layer**:
