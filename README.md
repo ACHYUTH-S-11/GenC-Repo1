@@ -11,98 +11,59 @@ This module interacts with the `Product` and `User` modules to fetch product det
 
 ## Architecture
 
+# E-commerce Application Architecture Diagrams
+
+This document outlines the architectural components, class relationships, and key interaction flows for the shopping cart module of our Spring Boot-based e-commerce application.
+
+---
+
+## 1. Component Diagram
+
+This diagram illustrates the high-level relationships and interactions between the main components of the application, showing the layered architecture and external integrations.
+
+```mermaid
 graph TD
-    subgraph "Component Diagram"
-        subgraph "Presentation Layer"
-            CartController[CartController]
-        end
-
-        subgraph "Business Logic Layer"
-            CartService[CartService]
-        end
-
-        subgraph "Data Access Layer"
-            CartItemRepository[CartItemRepository]
-            ProductRepository[ProductRepository]
-            UserRepository[UserRepository]
-        end
-
-        subgraph "External Systems"
-            MySQL[(MySQL Database)]
-            Eureka[(Eureka Discovery Service)]
-        end
-
-        CartController --> CartService
-        CartService --> CartItemRepository
-        CartService --> ProductRepository
-        CartService --> UserRepository
-        CartItemRepository --> MySQL
-        ProductRepository --> MySQL
-        UserRepository --> MySQL
-
-        CartController -- Registers/Discovers --> Eureka
-        CartService -- Discovers --> Eureka
-
-        style CartController fill:#bbf,stroke:#333,stroke-width:2px
-        style CartService fill:#bbf,stroke:#333,stroke-width:2px
-        style CartItemRepository fill:#bbf,stroke:#333,stroke-width:2px
-        style ProductRepository fill:#bbf,stroke:#333,stroke-width:2px
-        style UserRepository fill:#bbf,stroke:#333,stroke-width:2px
-        style MySQL fill:#f9f,stroke:#333,stroke-width:2px
-        style Eureka fill:#f9f,stroke:#333,stroke-width:2px
+    subgraph "Presentation Layer"
+        CartController[CartController]
     end
 
-    ---
+    subgraph "Business Logic Layer"
+        CartService[CartService]
+    end
 
-    classDiagram
-        User "1" --o "0..*" CartItem : has
-        CartItem "0..*" -- "1" Product : contains
+    subgraph "Data Access Layer"
+        CartItemRepository[CartItemRepository]
+        ProductRepository[ProductRepository]
+        UserRepository[UserRepository]
+    end
 
-        class User {
-            +Long id
-            +String username
-            +String email
-        }
+    subgraph "External Systems"
+        MySQL[(MySQL Database)]
+        Eureka[(Eureka Discovery Service)]
+    end
 
-        class Product {
-            +Long id
-            +String name
-            +double price
-            +int stock
-        }
+    CartController --> CartService
+    CartService --> CartItemRepository
+    CartService --> ProductRepository
+    CartService --> UserRepository
+    CartItemRepository --> MySQL
+    ProductRepository --> MySQL
+    UserRepository --> MySQL
 
-        class CartItem {
-            +Long id
-            +int quantity
-            +double subtotal
-        }
+    CartController -- Registers/Discovers --> Eureka
+    CartService -- Discovers --> Eureka
 
-    ---
-
-    sequenceDiagram
-        actor User
-        User->>CartController: POST /api/cart/add {productId, quantity}
-        CartController->>CartService: addItemToCart(userId, productId, quantity)
-        CartService->>UserRepository: findById(userId)
-        UserRepository-->>CartService: User object
-        CartService->>ProductRepository: findById(productId)
-        ProductRepository-->>CartService: Product object
-        alt Product not found or out of stock
-            CartService-->>CartController: Throws Exception (e.g., ProductNotFoundException)
-            CartController-->>User: HTTP 404/400 Error
-        else Product found and in stock
-            CartService->>CartItemRepository: findByUserIdAndProductId(userId, productId)
-            CartItemRepository-->>CartService: Existing CartItem (optional)
-            alt Existing CartItem
-                CartService->>CartItem: update quantity and subtotal
-            else New CartItem
-                CartService->>CartItem: create new CartItem
-            end
-            CartService->>CartItemRepository: save(CartItem)
-            CartItemRepository-->>CartService: Saved CartItem
-            CartService-->>CartController: CartItem object
-            CartController-->>User: HTTP 200 OK (CartItem details)
-        end
+    %% Optional: Styles for better visual separation (might not render in all GitHub viewers)
+    %% Some GitHub Markdown viewers might not support advanced styling directly within the code block.
+    %% If these styles don't render, the basic connections will still be clear.
+    style CartController fill:#bbf,stroke:#333,stroke-width:2px
+    style CartService fill:#bbf,stroke:#333,stroke-width:2px
+    style CartItemRepository fill:#bbf,stroke:#333,stroke-width:2px
+    style ProductRepository fill:#bbf,stroke:#333,stroke-width:2px
+    style UserRepository fill:#bbf,stroke:#333,stroke-width:2px
+    style MySQL fill:#f9f,stroke:#333,stroke-width:2px
+    style Eureka fill:#f9f,stroke:#333,stroke-width:2px
+```
 
 The Shopping Cart Module follows a **layered architecture** to ensure separation of concerns and maintainability:
 
