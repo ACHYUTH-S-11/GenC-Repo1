@@ -56,13 +56,13 @@ graph TD
     %% Optional: Styles for better visual separation (might not render in all GitHub viewers)
     %% Some GitHub Markdown viewers might not support advanced styling directly within the code block.
     %% If these styles don't render, the basic connections will still be clear.
-    style CartController fill:#bbf,stroke:#333,stroke-width:2px
-    style CartService fill:#bbf,stroke:#333,stroke-width:2px
-    style CartItemRepository fill:#bbf,stroke:#333,stroke-width:2px
-    style ProductRepository fill:#bbf,stroke:#333,stroke-width:2px
-    style UserRepository fill:#bbf,stroke:#333,stroke-width:2px
-    style MySQL fill:#f9f,stroke:#333,stroke-width:2px
-    style Eureka fill:#f9f,stroke:#333,stroke-width:2px
+    style CartController fill:#333,stroke:#eee,stroke-width:2px,color:#eee
+    style CartService fill:#333,stroke:#eee,stroke-width:2px,color:#eee
+    style CartItemRepository fill:#333,stroke:#eee,stroke-width:2px,color:#eee
+    style ProductRepository fill:#333,stroke:#eee,stroke-width:2px,color:#eee
+    style UserRepository fill:#333,stroke:#eee,stroke-width:2px,color:#eee
+    style MySQL fill:#444,stroke:#eee,stroke-width:2px,color:#eee
+    style Eureka fill:#444,stroke:#eee,stroke-width:2px,color:#eee
 ```
 
 The Shopping Cart Module follows a **layered architecture** to ensure separation of concerns and maintainability:
