@@ -11,12 +11,6 @@ This module interacts with the `Product` and `User` modules to fetch product det
 
 ## Architecture
 
-# E-commerce Application Architecture Diagrams
-
-This document outlines the architectural components, class relationships, and key interaction flows for the shopping cart module of our Spring Boot-based e-commerce application.
-
----
-
 ## 1. Component Diagram
 
 This diagram illustrates the high-level relationships and interactions between the main components of the application.
@@ -86,6 +80,7 @@ sequenceDiagram
     Cart Controller-->>API Gateway: Sends response
     API Gateway-->>User: Cart update confirmation
 ```
+
 The Shopping Cart Module follows a **layered architecture** to ensure separation of concerns and maintainability:
 
 1. **Controller Layer**:
@@ -103,9 +98,6 @@ The Shopping Cart Module follows a **layered architecture** to ensure separation
 4. **Model Layer**:
    - Defines the entities (`CartItem`, `Product`, `User`) and their relationships.
    - Represents the database tables and their mappings.
-
-### High-Level Architecture Diagram
-
 
 
 ## Controller Endpoints and Their Functions
