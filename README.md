@@ -19,7 +19,7 @@ This document outlines the architectural components, class relationships, and ke
 
 ## 1. Component Diagram
 
-This diagram illustrates the high-level relationships and interactions between the main components of the application, showing the layered architecture and external integrations.
+This diagram illustrates the high-level relationships and interactions between the main components of the application.
 
 ```mermaid
 graph TD
@@ -64,7 +64,28 @@ graph TD
     style MySQL fill:#444,stroke:#eee,stroke-width:2px,color:#eee
     style Eureka fill:#444,stroke:#eee,stroke-width:2px,color:#eee
 ```
+## 2. Flow Diagram
 
+```mermaid
+sequenceDiagram
+    participant User
+    participant API Gateway
+    participant Cart Controller
+    participant Cart Service
+    participant Repository
+    participant Database
+ 
+    User->>API Gateway: Adds item to cart
+    API Gateway->>Cart Controller: Routes request
+    Cart Controller->>Cart Service: Initiates cart process
+    Cart Service->>Repository: Manages data operations
+    Repository->>Database: Interacts with stored data
+    Database-->>Repository: Data operation result
+    Repository-->>Cart Service: Data confirmed
+    Cart Service-->>Cart Controller: Process complete
+    Cart Controller-->>API Gateway: Sends response
+    API Gateway-->>User: Cart update confirmation
+```
 The Shopping Cart Module follows a **layered architecture** to ensure separation of concerns and maintainability:
 
 1. **Controller Layer**:
