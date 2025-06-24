@@ -45,7 +45,7 @@ graph TD
     UserRepository --> MySQL
 
     CartController -- Registers/Discovers --> Eureka
-    CartService -- Discovers --> Eureka
+    
 
     %% Optional: Styles for better visual separation (might not render in all GitHub viewers)
     %% Some GitHub Markdown viewers might not support advanced styling directly within the code block.
@@ -63,22 +63,19 @@ graph TD
 ```mermaid
 sequenceDiagram
     participant User
-    participant API Gateway
     participant Cart Controller
     participant Cart Service
     participant Repository
     participant Database
  
-    User->>API Gateway: Adds item to cart
-    API Gateway->>Cart Controller: Routes request
+    User->>Cart Controller: Adds item to cart
     Cart Controller->>Cart Service: Initiates cart process
     Cart Service->>Repository: Manages data operations
     Repository->>Database: Interacts with stored data
     Database-->>Repository: Data operation result
     Repository-->>Cart Service: Data confirmed
     Cart Service-->>Cart Controller: Process complete
-    Cart Controller-->>API Gateway: Sends response
-    API Gateway-->>User: Cart update confirmation
+    Cart Controller-->>User: Cart update confirmation 
 ```
 
 The Shopping Cart Module follows a **layered architecture** to ensure separation of concerns and maintainability:
